@@ -165,3 +165,8 @@ if perc_diff_response == 'y':
     save_path = '../figures/maps/percent_change_CONUS.png'
     processor.plot_percent_change(ds_2022, ds_2025, output_path=save_path)
     processor.plot_percent_change(ds_2022, ds_2025, output_path=save_path, draw_quadrant_lines=True)
+    # # western CONUS
+    if specified_quadrant == 'west':
+        save_path = '../figures/maps/percent_change_western_CONUS.png'
+        processor.plot_percent_change(ds_2022_trimmed, ds_2025_trimmed, output_path=save_path)
+        processor.plot_percent_change(ds_2022_trimmed, ds_2025_trimmed, output_path=save_path, draw_quadrant_lines=True)
