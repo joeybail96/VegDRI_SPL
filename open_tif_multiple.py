@@ -85,34 +85,39 @@ for tif_name in os.listdir(input_path):
                 combined_datasets[year].append(data_array)
                 
 
-        # # Step 5: Plot (optional — can skip or add save_path)
-        # fig_filename = os.path.splitext(tif_name)[0] + "_lines.png"
-        # fig_save_path = os.path.join(fig_output_dir, fig_filename)
-        # processor.plot_ds_epsg4326(
-        #     ds4326, 
-        #     var_name='VegDRI', 
-        #     bounding_box=None, 
-        #     save_path=fig_save_path,  # Or provide a path like f"/some/dir/{base_name}.png"
-        #     grid_thickness="0", 
-        #     show_colorbar=None, 
-        #     colorbar_limits=None,
-        #     draw_quadrant_lines=True
-        # )
-        
-        
-        # fig_filename = os.path.splitext(tif_name)[0] + "_lines_westONLY.png"
-        # fig_save_path = os.path.join(fig_output_dir, fig_filename)   
-        # processor.plot_ds_epsg4326(
-        #     ds4326_trimmed, 
-        #     var_name='VegDRI', 
-        #     bounding_box=None, 
-        #     save_path=fig_save_path,  # Or provide a path like f"/some/dir/{base_name}.png"
-        #     grid_thickness="0", 
-        #     show_colorbar=None, 
-        #     colorbar_limits=None,
-        #     draw_quadrant_lines=True
-        # )
-        
+                # Step 5: plot (optional — prompts user to proceed)
+                plot_response = input("Would you like to generate VegDRI plots? (y/n): ").strip().lower()
+                
+                if plot_response == 'y':
+                    # Plot full dataset with quadrant lines
+                    fig_filename = os.path.splitext(tif_name)[0] + "_lines.png"
+                    fig_save_path = os.path.join(fig_output_dir, fig_filename)
+                    processor.plot_ds_epsg4326(
+                        ds4326, 
+                        var_name='VegDRI', 
+                        bounding_box=None, 
+                        save_path=fig_save_path,
+                        grid_thickness="0", 
+                        show_colorbar=None, 
+                        colorbar_limits=None,
+                        draw_quadrant_lines=True
+                    )
+                    
+                    # plot trimmed (west only) dataset with quadrant lines
+                    fig_filename = os.path.splitext(tif_name)[0] + "_lines_westONLY.png"
+                    fig_save_path = os.path.join(fig_output_dir, fig_filename)
+                    processor.plot_ds_epsg4326(
+                        ds4326_trimmed, 
+                        var_name='VegDRI', 
+                        bounding_box=None, 
+                        save_path=fig_save_path,
+                        grid_thickness="0", 
+                        show_colorbar=None, 
+                        colorbar_limits=None,
+                        draw_quadrant_lines=True
+                    )
+                else:
+                    print("Skipping plot generation.")
 
 
 # combine datasets
