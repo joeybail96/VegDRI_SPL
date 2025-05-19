@@ -24,7 +24,7 @@ combined_datasets = {
     "2022": [],
     "2025": []
 }
-combined_datasets_west = {
+combined_datasets_trimmed = {
     "2022": [],
     "2025": []
 }
@@ -69,7 +69,7 @@ for tif_name in os.listdir(input_path):
 
         # Step 3: trim data data
         # # if quadrant is specified, it will trim to NE, NW, SE, SW quadrant around SPL
-        ds4326_west = processor.trim_map(ds4326, quadrant=specified_quadrant)
+        ds4326_trimmed = processor.trim_map(ds4326, quadrant=specified_quadrant)
         
         # Step 4: accumulate data into 2022 or 2025 dataset
         date = processor.extract_week_end_date(tif_name)
@@ -78,8 +78,8 @@ for tif_name in os.listdir(input_path):
             year = str(date.year)
             if year in combined_datasets:
                 # add a time dimension to the 2D DataArray
-                data_array_west = ds4326_west["VegDRI"].expand_dims(time=[pd.Timestamp(date)])
-                combined_datasets_west[year].append(data_array_west)
+                data_array_trimmed = ds4326_trimmed["VegDRI"].expand_dims(time=[pd.Timestamp(date)])
+                combined_datasets_trimmed[year].append(data_array_trimmed)
                 # add 2022 and 2025 data to corresponding year
                 data_array = ds4326["VegDRI"].expand_dims(time=[pd.Timestamp(date)])
                 combined_datasets[year].append(data_array)
@@ -103,7 +103,7 @@ for tif_name in os.listdir(input_path):
         # fig_filename = os.path.splitext(tif_name)[0] + "_lines_westONLY.png"
         # fig_save_path = os.path.join(fig_output_dir, fig_filename)   
         # processor.plot_ds_epsg4326(
-        #     ds4326_west, 
+        #     ds4326_trimmed, 
         #     var_name='VegDRI', 
         #     bounding_box=None, 
         #     save_path=fig_save_path,  # Or provide a path like f"/some/dir/{base_name}.png"
@@ -122,17 +122,17 @@ ds_2022 = xr.Dataset({"VegDRI": ds_2022})
 ds_2025 = xr.concat(combined_datasets["2025"], dim="time") if combined_datasets["2025"] else None
 ds_2025 = xr.Dataset({"VegDRI": ds_2025})
 
-ds_2022_west = xr.concat(combined_datasets_west["2022"], dim="time") if combined_datasets_west["2022"] else None
-ds_2022_west = xr.Dataset({"VegDRI": ds_2022_west})
+ds_2022_trimmed = xr.concat(combined_datasets_trimmed["2022"], dim="time") if combined_datasets_trimmed["2022"] else None
+ds_2022_trimmed = xr.Dataset({"VegDRI": ds_2022_trimmed})
 
-ds_2025_west = xr.concat(combined_datasets_west["2025"], dim="time") if combined_datasets_west["2025"] else None
-ds_2025_west = xr.Dataset({"VegDRI": ds_2025_west})
+ds_2025_trimmed = xr.concat(combined_datasets_trimmed["2025"], dim="time") if combined_datasets_trimmed["2025"] else None
+ds_2025_trimmed = xr.Dataset({"VegDRI": ds_2025_trimmed})
 
 
 csv_filename = f'2022_{specified_quadrant}_stats.csv'
-processor.compute_and_export_vegdri_stats(ds_2022_west, csv_name=csv_filename)
+processor.compute_and_export_vegdri_stats(ds_2022_trimmed, csv_name=csv_filename)
 csv_filename = f'2025_{specified_quadrant}_stats.csv'
-processor.compute_and_export_vegdri_stats(ds_2025_west, csv_name=csv_filename)
+processor.compute_and_export_vegdri_stats(ds_2025_trimmed, csv_name=csv_filename)
 
 
 # if specified_quadrant is not None:
@@ -144,7 +144,7 @@ processor.compute_and_export_vegdri_stats(ds_2025_west, csv_name=csv_filename)
 # # processor.plot_histogram_vegdri(ds_2022, ds_2025, "Histogram for US", output_path=save_path)
 
 # save_path = os.path.join(fig_output_dir, save_filename)
-# processor.plot_histogram_vegdri(ds_2022_west, ds_2025_west, "Histogram for Western US", output_path=save_path)
+# processor.plot_histogram_vegdri(ds_2022_trimmed, ds_2025_trimmed, "Histogram for Western US", output_path=save_path)
 
 
 # summary_df = pd.DataFrame(summary_list)
