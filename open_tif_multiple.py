@@ -30,6 +30,9 @@ combined_datasets_trimmed = {
 }
 
 
+plot_response = input("Would you like to generate VegDRI plots? (y/n): ").strip().lower()
+
+
 # loop through all files in input path
 for tif_name in os.listdir(input_path):
     
@@ -85,9 +88,7 @@ for tif_name in os.listdir(input_path):
                 combined_datasets[year].append(data_array)
                 
 
-                # Step 5: plot (optional — prompts user to proceed)
-                plot_response = input("Would you like to generate VegDRI plots? (y/n): ").strip().lower()
-                
+                # Step 5: plot (optional — prompts user to proceed)               
                 if plot_response == 'y':
                     # Plot full dataset with quadrant lines
                     fig_filename = os.path.splitext(tif_name)[0] + "_lines.png"
