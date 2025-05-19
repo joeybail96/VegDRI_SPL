@@ -150,12 +150,15 @@ save_path = f'../figures/histograms/{specified_quadrant}_pdf.png'
 processor.plot_histogram_vegdri(ds_2022_trimmed, ds_2025_trimmed, "Histogram for Western US", output_path=save_path)
 
 
+# generate % difference maps
+# # full CONUS
+save_filename = 'percent_change_CONUS.png'
+save_path = os.path.join(fig_output_dir, save_filename)
+processor.plot_percent_change(ds_2022, ds_2025, output_path=save_path)
+processor.plot_percent_change(ds_2022, ds_2025, output_path=save_path, draw_quadrant_lines=True)
+# # trimmed CONUS
+save_filename = f'percent_change_{specified_quadrant}.png'
+save_path = os.path.join(fig_output_dir, save_filename)
+processor.plot_percent_change(ds_2022_trimmed, ds_2025_trimmed, output_path=save_path)
+processor.plot_percent_change(ds_2022_trimmed, ds_2025_trimmed, output_path=save_path, draw_quadrant_lines=True)
 
-# save_filename = 'percent_change_lines.png'
-# save_path = os.path.join(fig_output_dir, save_filename)
-# processor.plot_percent_change(ds_2022, ds_2025, output_path=save_path, draw_quadrant_lines=True)
-
-
-# save_filename = 'percent_change_CONUS.png'
-# save_path = os.path.join(fig_output_dir, save_filename)
-# processor.plot_percent_change(ds_2022, ds_2025, output_path=save_path)

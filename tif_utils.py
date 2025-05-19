@@ -595,6 +595,9 @@ class TifProcessor:
             # Horizontal dividing line at the lat_midpoint (latitude)
             ax.plot([min_lon, max_lon], [lat_midpoint, lat_midpoint], color='black', linestyle='--', linewidth=6, transform=crs_proj, zorder=5)
             
+            # edit output path to resemble that quadrant lines were drawn
+            if output_path:
+                output_path = 'lined_' + output_path
      
         # Add colorbar
         cbar = plt.colorbar(img, ax=ax, orientation='vertical', pad=0.05)
