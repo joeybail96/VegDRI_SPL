@@ -96,13 +96,13 @@ for tif_name in os.listdir(input_path):
                 # Step 5: plot (optional — prompts user to proceed)               
                 if plot_response == 'y':
                     # Plot full dataset with quadrant lines
-                    fig_filename = os.path.splitext(tif_name)[0] + "_lines.png"
-                    fig_save_path = os.path.join(fig_output_dir, fig_filename)
+                    filename = os.path.splitext(tif_name)[0]
+                    save_path = f'../figures/maps/{filename}.png'
                     processor.plot_ds_epsg4326(
                         ds4326, 
                         var_name='VegDRI', 
                         bounding_box=None, 
-                        save_path=fig_save_path,
+                        save_path=save_path,
                         grid_thickness="0", 
                         show_colorbar=None, 
                         colorbar_limits=None,
@@ -110,13 +110,13 @@ for tif_name in os.listdir(input_path):
                     )
                     
                     # plot trimmed (west only) dataset with quadrant lines
-                    fig_filename = os.path.splitext(tif_name)[0] + "_lines_westONLY.png"
-                    fig_save_path = os.path.join(fig_output_dir, fig_filename)
+                    filename = os.path.splitext(tif_name)[0]
+                    save_path = f'../figures/maps/{filename}_{specified_quadrant}.png'
                     processor.plot_ds_epsg4326(
                         ds4326_trimmed, 
                         var_name='VegDRI', 
                         bounding_box=None, 
-                        save_path=fig_save_path,
+                        save_path=save_path,
                         grid_thickness="0", 
                         show_colorbar=None, 
                         colorbar_limits=None,
