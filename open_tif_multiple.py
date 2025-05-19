@@ -109,19 +109,20 @@ for tif_name in os.listdir(input_path):
                         draw_quadrant_lines=True
                     )
                     
-                    # plot trimmed (west only) dataset with quadrant lines
-                    filename = os.path.splitext(tif_name)[0]
-                    save_path = f'../figures/maps/{filename}_{specified_quadrant}.png'
-                    processor.plot_ds_epsg4326(
-                        ds4326_trimmed, 
-                        var_name='VegDRI', 
-                        bounding_box=None, 
-                        save_path=save_path,
-                        grid_thickness="0", 
-                        show_colorbar=None, 
-                        colorbar_limits=None,
-                        draw_quadrant_lines=True
-                    )
+                    if specified_quadrant == 'west':
+                        # plot trimmed (west only) dataset with quadrant lines
+                        filename = os.path.splitext(tif_name)[0]
+                        save_path = f'../figures/maps/{filename}_{specified_quadrant}.png'
+                        processor.plot_ds_epsg4326(
+                            ds4326_trimmed, 
+                            var_name='VegDRI', 
+                            bounding_box=None, 
+                            save_path=save_path,
+                            grid_thickness="0", 
+                            show_colorbar=None, 
+                            colorbar_limits=None,
+                            draw_quadrant_lines=True
+                        )
                 else:
                     print("Skipping plot generation.")
 
