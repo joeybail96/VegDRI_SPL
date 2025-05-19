@@ -33,6 +33,9 @@ combined_datasets_trimmed = {
 
 
 plot_response = input("Would you like to generate VegDRI plots? (y/n): ").strip().lower()
+stats_response = input("Would you like to generate statistics for trimmed US? (y/n): ").strip().lower()
+histo_response = input("Would you like to generate VegDRI histograms? (y/n): ").strip().lower()
+perc_diff_response = input("Would you like to generate % difference maps? (y/n): ").strip().lower()
 
 
 # loop through all files in input path
@@ -139,29 +142,26 @@ ds_2025_trimmed = xr.Dataset({"VegDRI": ds_2025_trimmed})
 
 
 # compute statistics on trimmed section for 2022 and 2025
-# # this can be edited in the future to also include CONUS statistics
-csv_filename = f'../data/output/stats/2022_{specified_quadrant}_stats.csv'
-processor.compute_and_export_vegdri_stats(ds_2022_trimmed, csv_name=csv_filename)
-csv_filename = f'../data/output/stats/2025_{specified_quadrant}_stats.csv'
-processor.compute_and_export_vegdri_stats(ds_2025_trimmed, csv_name=csv_filename)
+if stats_response == 'y':
+    # # this can be edited in the future to also include CONUS statistics
+    csv_filename = f'../data/output/stats/2022_{specified_quadrant}_stats.csv'
+    processor.compute_and_export_vegdri_stats(ds_2022_trimmed, csv_name=csv_filename)
+    csv_filename = f'../data/output/stats/2025_{specified_quadrant}_stats.csv'
+    processor.compute_and_export_vegdri_stats(ds_2025_trimmed, csv_name=csv_filename)
 
 
 # generate histogram analysis for 2022 and 2025 trimmed and full CONUS
-save_path = '../figures/histograms/CONUS_pdf.png'
-processor.plot_histogram_vegdri(ds_2022, ds_2025, "Histogram for US", output_path=save_path)
-save_path = f'../figures/histograms/{specified_quadrant}_pdf.png'
-processor.plot_histogram_vegdri(ds_2022_trimmed, ds_2025_trimmed, "Histogram for Western US", output_path=save_path)
+if histo_response == 'y':
+    save_path = '../figures/histograms/CONUS_pdf.png'
+    processor.plot_histogram_vegdri(ds_2022, ds_2025, "Histogram for US", output_path=save_path)
+    save_path = f'../figures/histograms/{specified_quadrant}_pdf.png'
+    processor.plot_histogram_vegdri(ds_2022_trimmed, ds_2025_trimmed, "Histogram for Western US", output_path=save_path)
 
 
-# generate % difference maps
-# # full CONUS
-save_filename = 'percent_change_CONUS.png'
-save_path = os.path.join(fig_output_dir, save_filename)
-processor.plot_percent_change(ds_2022, ds_2025, output_path=save_path)
-processor.plot_percent_change(ds_2022, ds_2025, output_path=save_path, draw_quadrant_lines=True)
-# # trimmed CONUS
-save_filename = f'percent_change_{specified_quadrant}.png'
-save_path = os.path.join(fig_output_dir, save_filename)
-processor.plot_percent_change(ds_2022_trimmed, ds_2025_trimmed, output_path=save_path)
-processor.plot_percent_change(ds_2022_trimmed, ds_2025_trimmed, output_path=save_path, draw_quadrant_lines=True)
-
+# generate % difference maps for 2022 and 2025 trimmed and full CONUS
+if perc_diff_response == 'y':
+    # generate % difference maps
+    # # full CONUS
+    save_path = '../figures/maps/percent_change_CONUS.png'
+    processor.plot_percent_change(ds_2022, ds_2025, output_path=save_path)
+    processor.plot_percent_change(ds_2022, ds_2025, output_path=save_path, draw_quadrant_lines=True)

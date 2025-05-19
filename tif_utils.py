@@ -597,7 +597,7 @@ class TifProcessor:
             
             # edit output path to resemble that quadrant lines were drawn
             if output_path:
-                output_path = 'lined_' + output_path
+                output_path = output_path[:-4] + '_lined.png'
      
         # Add colorbar
         cbar = plt.colorbar(img, ax=ax, orientation='vertical', pad=0.05)
