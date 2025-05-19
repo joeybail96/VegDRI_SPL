@@ -308,7 +308,7 @@ class TifProcessor:
             
 
 
-    def trim_map(self, ds, lon_boundary=-100.0, quadrant=None):
+    def trim_map(self, ds, lon_boundary=-100.0, quadrant='west'):
         """
         Trims the dataset to the western U.S., or a specified quadrant within the western U.S.
         
@@ -324,7 +324,7 @@ class TifProcessor:
         western_ds = ds.sel(lon=ds.lon[(ds.lon >= ds.lon.min().values) & (ds.lon <= lon_boundary)])
     
         # If no quadrant is specified, return the full western dataset
-        if quadrant is None:
+        if quadrant == 'west':
             return western_ds
         
         # Calculate the boundaries only if quadrant is specified

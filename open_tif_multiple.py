@@ -115,41 +115,35 @@ for tif_name in os.listdir(input_path):
         
 
 
-# Combine datatsets
+# combine datasets
+# # 2022 full CONSU
 ds_2022 = xr.concat(combined_datasets["2022"], dim="time") if combined_datasets["2022"] else None
 ds_2022 = xr.Dataset({"VegDRI": ds_2022})
-
+# # 2025 full CONUS
 ds_2025 = xr.concat(combined_datasets["2025"], dim="time") if combined_datasets["2025"] else None
 ds_2025 = xr.Dataset({"VegDRI": ds_2025})
-
+# # 2022 trimmed section of CONUS
 ds_2022_trimmed = xr.concat(combined_datasets_trimmed["2022"], dim="time") if combined_datasets_trimmed["2022"] else None
 ds_2022_trimmed = xr.Dataset({"VegDRI": ds_2022_trimmed})
-
+# # 2025 trimmed section of CONUS
 ds_2025_trimmed = xr.concat(combined_datasets_trimmed["2025"], dim="time") if combined_datasets_trimmed["2025"] else None
 ds_2025_trimmed = xr.Dataset({"VegDRI": ds_2025_trimmed})
 
 
-csv_filename = f'2022_{specified_quadrant}_stats.csv'
+# compute statistics on trimmed section for 2022 and 2025
+# # this can be edited in the future to also include CONUS statistics
+csv_filename = f'../data/output/stats/2022_{specified_quadrant}_stats.csv'
 processor.compute_and_export_vegdri_stats(ds_2022_trimmed, csv_name=csv_filename)
-csv_filename = f'2025_{specified_quadrant}_stats.csv'
+csv_filename = f'../data/output/stats/2025_{specified_quadrant}_stats.csv'
 processor.compute_and_export_vegdri_stats(ds_2025_trimmed, csv_name=csv_filename)
 
 
-# if specified_quadrant is not None:
-#     save_filename = f'2week_histogram_CONUS_Quadrant_{specified_quadrant}.png'
+# generate histogram analysis for 2022 and 2025 trimmed and full CONUS
+save_path = '../figures/histograms/CONUS_pdf.png'
+processor.plot_histogram_vegdri(ds_2022, ds_2025, "Histogram for US", output_path=save_path)
+save_path = f'../figures/histograms/{specified_quadrant}_pdf.png'
+processor.plot_histogram_vegdri(ds_2022_trimmed, ds_2025_trimmed, "Histogram for Western US", output_path=save_path)
 
-# else:
-#     save_filename = '2week_histogram_CONUS.png'
-# save_path = os.path.join(fig_output_dir, save_filename)
-# # processor.plot_histogram_vegdri(ds_2022, ds_2025, "Histogram for US", output_path=save_path)
-
-# save_path = os.path.join(fig_output_dir, save_filename)
-# processor.plot_histogram_vegdri(ds_2022_trimmed, ds_2025_trimmed, "Histogram for Western US", output_path=save_path)
-
-
-# summary_df = pd.DataFrame(summary_list)
-# summary_df.to_csv(f"{specified_quadrant}_VegDRI_summary_stats.csv", index=False)
-# print(summary_df.to_string(index=False))
 
 
 # save_filename = 'percent_change_lines.png'
