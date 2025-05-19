@@ -67,25 +67,23 @@ for tif_name in os.listdir(input_path):
         else:
             ds4326 = xr.open_dataset(nc_path_4326)
 
-        # Step 3: Separate west data
+        # Step 3: trim data data
+        # # if quadrant is specified, it will trim to NE, NW, SE, SW quadrant around SPL
         ds4326_west = processor.trim_map(ds4326, quadrant=specified_quadrant)
         
-        
-        # Step 4: Accumulate data into 2022 or 2025 dataset
+        # Step 4: accumulate data into 2022 or 2025 dataset
         date = processor.extract_week_end_date(tif_name)
-
         if date:
+            # extract year from date
             year = str(date.year)
             if year in combined_datasets:
-                # Add a time dimension to the 2D DataArray
+                # add a time dimension to the 2D DataArray
                 data_array_west = ds4326_west["VegDRI"].expand_dims(time=[pd.Timestamp(date)])
                 combined_datasets_west[year].append(data_array_west)
-                
+                # add 2022 and 2025 data to corresponding year
                 data_array = ds4326["VegDRI"].expand_dims(time=[pd.Timestamp(date)])
                 combined_datasets[year].append(data_array)
                 
-
-        
 
         # # Step 5: Plot (optional — can skip or add save_path)
         # fig_filename = os.path.splitext(tif_name)[0] + "_lines.png"
@@ -115,15 +113,6 @@ for tif_name in os.listdir(input_path):
         #     draw_quadrant_lines=True
         # )
         
-        
-
-        
-
-  
-        # stats = processor.summarize_dataset_stats(ds4326_west, 'VegDRI', tif_name)
-        # stats_filename = f'2week_{specified_quadrant}.png'
-        # stats[stats_filename] = tif_name  # Add filename to the stats
-        # summary_list.append(stats)
 
 
 # Combine datatsets
