@@ -122,7 +122,7 @@ for tif_name in os.listdir(input_path):
 
 
 # combine datasets
-# # 2022 full CONSU
+# # 2022 full CONUS
 ds_2022 = xr.concat(combined_datasets["2022"], dim="time") if combined_datasets["2022"] else None
 ds_2022 = xr.Dataset({"VegDRI": ds_2022})
 # # 2025 full CONUS
