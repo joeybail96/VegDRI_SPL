@@ -16,7 +16,7 @@ fig_output_dir = "/uufs/chpc.utah.edu/common/home/hallar-group2/climatology/arid
 # specify a quadarant that will be used for analysis
 # # 'NE', 'NW', 'SW', 'SE' centered around SPL
 # # 'west' == west of specified longitude
-specified_quadrant = 'SW'
+specified_quadrant = 'west'
 
 # initialize processor class object
 processor = TifProcessor()

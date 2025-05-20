@@ -267,6 +267,11 @@ class TifProcessor:
         plt.tight_layout()
     
         if save_path:
+            
+            # edit output path to resemble that quadrant lines were drawn
+            if draw_quadrant_lines:
+                save_path = save_path[:-4] + '_lined.png'
+            
             plt.savefig(save_path, dpi=300, bbox_inches='tight')
             plt.close()
         else:
