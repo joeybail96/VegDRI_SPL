@@ -106,7 +106,7 @@ for tif_name in os.listdir(input_path):
                         grid_thickness="0", 
                         show_colorbar=None, 
                         colorbar_limits=None,
-                        draw_quadrant_lines=True
+                        draw_quadrant_lines=False
                     )
                     
                     if specified_quadrant == 'west':
@@ -121,7 +121,7 @@ for tif_name in os.listdir(input_path):
                             grid_thickness="0", 
                             show_colorbar=None, 
                             colorbar_limits=None,
-                            draw_quadrant_lines=True
+                            draw_quadrant_lines=False
                         )
                 else:
                     print("Skipping plot generation.")
@@ -164,7 +164,8 @@ if perc_diff_response == 'y':
     # generate % difference maps
     # # full CONUS
     save_path = '../figures/maps/percent_change_CONUS.png'
-    processor.plot_percent_change(ds_2022, ds_2025, output_path=save_path)
+    save_nc_path = 'percent_change_CONUS.nc'
+    processor.plot_percent_change(ds_2022, ds_2025, output_path=save_path, save_nc_path=save_nc_path)
     processor.plot_percent_change(ds_2022, ds_2025, output_path=save_path, draw_quadrant_lines=True)
     # # western CONUS
     if specified_quadrant == 'west':

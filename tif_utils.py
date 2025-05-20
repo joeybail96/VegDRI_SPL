@@ -508,7 +508,7 @@ class TifProcessor:
     
 
 
-    def plot_percent_change(self, ds_2022, ds_2025, output_path=None, draw_quadrant_lines=False):
+    def plot_percent_change(self, ds_2022, ds_2025, output_path=None, draw_quadrant_lines=False, save_nc_path = None):
         """
         Averages VegDRI over the two time steps in each dataset,
         calculates percent change between 2022 and 2025,
@@ -617,6 +617,14 @@ class TifProcessor:
             plt.close()
         else:
             plt.show()
+            
+        if save_nc_path:
+            # Create a new dataset
+            percent_change_ds = xr.Dataset(
+                {"percent_change": (("lat", "lon"), percent_change.values)},
+                coords={"lat": lat, "lon": lon}
+            )
+            percent_change_ds.to_netcdf(save_nc_path) 
     
         return percent_change
 
